@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="Socket" targetName="Socket" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="016d562a-39bf-4b9c-a674-7013351862c5" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectId" id="1TCCKnlkow7FScXgVBBIso5zerV" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="CMake Application.Socket">
+    <configuration name="Fs::regulate.test" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Socket" TARGET_NAME="Socket" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Socket" RUN_TARGET_NAME="Socket" TEST_METHOD="test" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="regulate.test" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Socket" TARGET_NAME="Socket" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Socket" RUN_TARGET_NAME="Socket" TEST_CLASS="regulate" TEST_METHOD="test" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test1.c1" type="CMakeGoogleTestRunConfigurationType" factoryName="Google Test" temporary="true" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Socket" TARGET_NAME="Socket" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Socket" RUN_TARGET_NAME="Socket" TEST_CLASS="test1" TEST_METHOD="c1" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Socket" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Socket" TARGET_NAME="Socket" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Socket" RUN_TARGET_NAME="Socket">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Socket" />
+      <item itemvalue="Google Test.Fs::regulate.test" />
+      <item itemvalue="Google Test.regulate.test" />
+      <item itemvalue="Google Test.test1.c1" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Google Test.test1.c1" />
+        <item itemvalue="Google Test.regulate.test" />
+        <item itemvalue="Google Test.Fs::regulate.test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="016d562a-39bf-4b9c-a674-7013351862c5" name="Default Changelist" comment="" />
+      <created>1572954629404</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572954629404</updated>
+      <workItem from="1572954636008" duration="30742000" />
+      <workItem from="1573023182020" duration="22254000" />
+      <workItem from="1573052120884" duration="240000" />
+      <workItem from="1573052703994" duration="2643000" />
+      <workItem from="1573358966500" duration="2048000" />
+      <workItem from="1573370062791" duration="3000" />
+    </task>
+    <servers />
+  </component>
+</project>
