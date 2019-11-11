@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::start_wraper() {
+    update_text();
 //    this->findChild<QTextBrowser *>(QString("output"))->setText("刚刚点击");
     QPushButton * run_button = this->findChild<QPushButton *>(QString("run"));
     QPushButton * stop_button = this->findChild<QPushButton *>(QString("stop"));
@@ -48,6 +49,7 @@ void MainWindow::start_wraper() {
     server->start();
 //    workerThread.start();
     connect(server, SIGNAL(print_message(QString)), output, SLOT(setText(QString)));
+    server->print("* Server Started\n");
 }
 
 void MainWindow::stop_wrapper() {
@@ -69,6 +71,7 @@ void MainWindow::restart_wrapper() {
     string ip = string(this->findChild<QTextEdit *>(QString("ip"))->toPlainText().toUtf8().constData());
     string port = string(this->findChild<QTextEdit *>(QString("port"))->toPlainText().toUtf8().constData());
     string path = string(this->findChild<QTextEdit *>(QString("path"))->toPlainText().toUtf8().constData());
+    string thread_limit = string(this->findChild<QTextEdit *>(QString("thread_limit"))->toPlainText().toUtf8().constData());
     if (!check_ip(ip)) {
         this->server->print("New Ip is illigal\n");
         return;
@@ -81,7 +84,10 @@ void MainWindow::restart_wrapper() {
         this->server->print("New port is illigal\n");
         return;
     }
-    server->set_all(ip, path, port);
+    if (!check_thread_limit(thread_limit)) {
+        this->server->print("New thread limit is not in range 1-30");
+    }
+    server->set_all(ip, path, port, thread_limit);
     stop_wrapper();
 //    start_wraper();
 
@@ -98,10 +104,11 @@ void MainWindow::update_text() {
     QTextEdit * ip = this->findChild<QTextEdit *>(QString("ip"));
     QTextEdit * port = this->findChild<QTextEdit *>(QString("port"));
     QTextEdit * path = this->findChild<QTextEdit *>(QString("path"));
-
+    QTextEdit * thread_limit = this->findChild<QTextEdit *>(QString("thread_limit"));
     ip->setText(QString::fromStdString(server->get_ip_to_listen()));
     port->setText(QString::fromStdString(to_string(server->get_port())));
     path->setText(QString::fromStdString(server->get_base_path()));
+    thread_limit->setText(QString::fromStdString(to_string(server->get_max_thread_num())));
 }
 
 //string MainWindow::get_base_path() {

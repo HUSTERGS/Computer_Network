@@ -80,6 +80,9 @@ void client_thread(int new_socket, string ip_in, my_thread * t, http_server * ou
 }
 
 bool check_ip(string ip) {
+    if (ip == "") {
+        return false;
+    }
     string left;
     string right;
     for (int i = 0; i < 3; i++) {
@@ -106,12 +109,22 @@ bool check_ip(string ip) {
 }
 
 bool check_path(string path) {
+    if (path == "") {
+        return false;
+    }
     Fs tmp(path);
     return tmp.ok;
 }
 bool check_port(string port) {
+    if (port == "") {
+        return false;
+    }
     int tmp = stoi(port);
     return tmp > 0 && tmp < 65535;
 }
 
+bool check_thread_limit(string thread_limit) {
+    int limit = stoi(thread_limit);
+    return limit > 0 && limit <= 30;
+}
 

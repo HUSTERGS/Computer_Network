@@ -89,17 +89,18 @@ void http_server::set_port(int port) {
     }
 }
 
-void http_server::set_all(string ip, string path, string port) {
+void http_server::set_all(string ip, string path, string port, string thread_limit) {
     set_ip_to_listen(ip);
     set_base_path(path);
     set_port(stoi(port));
+    set_max_thread_num(stoi(thread_limit));
 //    restart();
 }
 
 void http_server::run() {
 //    output->setText("进入run");
     this->stoped = false;
-    print("* Server Started\n");
+//    print("* Server Started\n");
     cout << "Server Started" << endl;
     int new_socket;
     struct sockaddr_in address;

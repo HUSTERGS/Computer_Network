@@ -21,7 +21,7 @@ public:
     void set_max_thread_num(int num);
     void set_ip_to_listen(string ip);
     void set_base_path(string path);
-    void set_all(string, string, string);
+    void set_all(string, string, string, string);
     void print(string s);
     int get_port();
     int get_max_thread_num();

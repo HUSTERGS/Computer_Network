@@ -34,7 +34,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>输出</string>
+     <string>Log</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -69,8 +69,8 @@
    <widget class="QLabel" name="port_label">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>390</y>
+      <x>290</x>
+      <y>400</y>
       <width>31</width>
       <height>18</height>
      </rect>
@@ -121,8 +121,8 @@
    <widget class="QPushButton" name="run">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>510</y>
+      <x>230</x>
+      <y>540</y>
       <width>96</width>
       <height>34</height>
      </rect>
@@ -140,8 +140,8 @@
    <widget class="QPushButton" name="stop">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>510</y>
+      <x>360</x>
+      <y>540</y>
       <width>96</width>
       <height>34</height>
      </rect>
@@ -153,14 +153,53 @@
    <widget class="QPushButton" name="reset">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>510</y>
+      <x>490</x>
+      <y>540</y>
       <width>96</width>
       <height>34</height>
      </rect>
     </property>
     <property name="text">
      <string>Reset</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="thread_limit">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>500</y>
+      <width>161</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="thread_limit_logo">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>500</y>
+      <width>81</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>max threads</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>500</y>
+      <width>58</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>( 1 - 30 )</string>
     </property>
    </widget>
   </widget>

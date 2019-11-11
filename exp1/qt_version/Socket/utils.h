@@ -17,4 +17,5 @@ void client_thread(int , string, my_thread *, http_server *);
 bool check_ip(string ip);
 bool check_port(string port);
 bool check_path(string path);
+bool check_thread_limit(string thread_limit);
 #endif //SOCKET_UTILS_H
