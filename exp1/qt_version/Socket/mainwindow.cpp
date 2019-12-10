@@ -72,6 +72,8 @@ void MainWindow::restart_wrapper() {
     string port = string(this->findChild<QTextEdit *>(QString("port"))->toPlainText().toUtf8().constData());
     string path = string(this->findChild<QTextEdit *>(QString("path"))->toPlainText().toUtf8().constData());
     string thread_limit = string(this->findChild<QTextEdit *>(QString("thread_limit"))->toPlainText().toUtf8().constData());
+
+    cout << "结果为" << ip << port << path << endl;
     if (!check_ip(ip)) {
         this->server->print("New Ip is illigal\n");
         return;
@@ -91,8 +93,9 @@ void MainWindow::restart_wrapper() {
     stop_wrapper();
 //    start_wraper();
 
-    update_text();
     start_wraper();
+    update_text();
+
 }
 MainWindow::~MainWindow()
 {

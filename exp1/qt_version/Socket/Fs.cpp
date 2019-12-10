@@ -48,9 +48,8 @@ string Fs::regulate(string path) {
 
     return path;
 }
-bool Fs::check_path(string path) {
+bool Fs::check_path(string path, string base_path) {
     // 检查是否越界
-    string base_path = string(PATH);
     path = regulate(path);
     if (path.size() < base_path.size()) {
         return false;

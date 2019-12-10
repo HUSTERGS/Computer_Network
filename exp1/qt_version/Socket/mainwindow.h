@@ -28,19 +28,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-//    void set_port(int port);
-//    void set_max_thread_num(int num);
-//    void set_ip_to_listen(string ip);
-//    void set_base_path(string path);
-
-//    int get_port();
-//    int get_max_thread_num();
-//    string get_ip_to_listen();
-//    string get_base_path();
-
-//    void run_server();
-//    void stop_server();
-//    void restart_server();
     http_server * server = nullptr;
     QThread workerThread;
     void start_wraper();

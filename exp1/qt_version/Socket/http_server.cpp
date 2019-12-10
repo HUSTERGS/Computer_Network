@@ -140,6 +140,7 @@ void http_server::run() {
     cout << "* Running on http://" << this->ip_to_listen << ":" <<  this->port << "/ (Press CTRL+C to quit)" << endl;
     vector<my_thread *> threads_pool;
     vector<bool> threads_status;
+    int count = 0;
     while(true) {
         // 阻塞监听
         if (this->stoped) {
@@ -151,15 +152,18 @@ void http_server::run() {
             perror("accept");
             exit(EXIT_FAILURE);
         }
+        count++;
+        cout << count << endl;
         string ip_in = string(inet_ntoa(address.sin_addr));
 
         for (int i = 0; i < threads_pool.size(); i++) {
             if (threads_pool.at(i)->finished) {
+//                delete threads_pool.at(i);
                 threads_pool.erase(threads_pool.begin() + i);
                 i--;
             }
         }
-//        cout << "目前有" << threads_pool.size() << "个连接" << endl;
+        cout << "目前有" << threads_pool.size() << "个连接" << endl;
         if (threads_pool.size() < this->max_thread_num) {
             // 如果还可以加入
             my_thread client;

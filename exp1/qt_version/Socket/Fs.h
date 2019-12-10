@@ -21,7 +21,7 @@ public:
     Fs();
     static map<string, string> content_type;
     static string regulate(string);
-    static bool check_path(string);
+    static bool check_path(string, string);
 };
 
 

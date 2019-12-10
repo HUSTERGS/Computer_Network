@@ -6,9 +6,9 @@
 #define SOCKET_CONFIG_H
 
 #define PORT 8080
-#define MAX_THREAD_NUM 30
+#define MAX_THREAD_NUM 100
 #define IP_TO_LISTEN "0.0.0.0"
-#define PATH "/home/samuel/exp1"
+//#define PATH "/home/samuel/exp1"
 #define NOT_FIND "/home/samuel/exp1/404.html"
 #define BAD_REQUEST "/home/samuel/exp1/400.html"
 #define INDEX "/home/samuel/exp1/index.html"

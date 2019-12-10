@@ -47,13 +47,13 @@ void client_thread(int new_socket, string ip_in, my_thread * t, http_server * ou
 
     Request request = Request(string(buffer));
     Response response = Response(request);
-    string path = PATH + request.url;
+    string path = output_server->get_base_path() + request.url;
     Fs fs;
     if (request.url == "/") {
         path = INDEX;
     }
     char file_buffer[255];
-    if (!Fs::check_path(path)) {
+    if (!Fs::check_path(path, output_server->get_base_path())) {
         // 如果检测不通过，访问了上级目录
         response.set_status(400);
         fs = Fs(BAD_REQUEST);
@@ -125,6 +125,6 @@ bool check_port(string port) {
 
 bool check_thread_limit(string thread_limit) {
     int limit = stoi(thread_limit);
-    return limit > 0 && limit <= 30;
+    return limit > 0 && limit <= MAX_THREAD_NUM;
 }
 
