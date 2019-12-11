@@ -11,14 +11,18 @@
 #include "GBNRdtSender.h"
 #include "SRRdtReceiver.h"
 #include "SRRdtSender.h"
+#include "TCPSender.h"
+#include "TCPReceiver.h"
 int main(int argc, char* argv[])
 {
 //	RdtSender *ps = new StopWaitRdtSender();
 //	RdtReceiver * pr = new StopWaitRdtReceiver();
 //    RdtSender *ps = new GBNRdtSender();
 //    RdtReceiver * pr = new GBNRdtReceiver();
-    RdtReceiver * pr = new SRRdtReceiver();
-    RdtSender * ps = new SRRdtSender();
+//    RdtReceiver * pr = new SRRdtReceiver();
+//    RdtSender * ps = new SRRdtSender();
+    RdtReceiver * pr = new TCPReceiver();
+    RdtSender * ps = new TCPSender();
 	pns->setRunMode(0);  //VERBOS模式
 //	pns->setRunMode(1);  //安静模式
 	pns->init();
