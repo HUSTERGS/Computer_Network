@@ -23,7 +23,9 @@ bool GBNRdtSender::send(const Message &message) {
     memcpy(packet->payload, message.data, sizeof(message.data));
     packet->checksum = pUtils->calculateCheckSum(*packet);
     packges.push_back(packet);
-    pUtils->printPacket("发送方发送报文", *packet);
+    if (!TESTING) {
+        pUtils->printPacket("发送方发送报文", *packet);
+    }
     if (base == nextseqnum) {
         pns->startTimer(SENDER, Configuration::TIME_OUT,packet->seqnum);			//启动发送方定时器
     }
@@ -48,22 +50,19 @@ void GBNRdtSender::receive(const struct Packet & ackPkt) {
             // 先暂存base的值,用于停止计时器
             int temp = base;
             // 更新base的值
+            cout << "GBN 发送方收到ack = " << ackPkt.acknum << "窗口发生变化: 由 " << endl;
+            printWindow();
+            cout << "变为: " << endl;
             base = ackPkt.acknum + 1;
             base %= MAX_SEQ;
+            printWindow();
             int index = 0;
-//            if (nextseqnum > temp || nextseqnum == 0) {
-//                // 没有越过分界点
-//                index = ackPkt.acknum - temp;
-//            } else if (nextseqnum < temp) {
-//                // 越过了分界点
-//                index = MAX_SEQ - temp + ackPkt.acknum;
-//            }
             if (ackPkt.acknum >= temp) {
                 index = ackPkt.acknum - temp;
             } else {
                 index = MAX_SEQ - temp + ackPkt.acknum;
             }
-            cout << "收到ack, 此时ack = " << ackPkt.acknum << " base = " << base << " temp = " << temp << " next = " << nextseqnum << endl;
+//            cout << "收到ack, 此时ack = " << ackPkt.acknum << " base = " << base << " temp = " << temp << " next = " << nextseqnum << endl;
 
             // 假设此时是base = 2 ^ k - 1，然后收到的ack = 0, 那么, 结果应该要删除2个
             for (int i = 0; i <= index; i++) {
@@ -101,7 +100,32 @@ void GBNRdtSender::timeoutHandler(int seqNum) {
     for (int i = 0; i < limit; i++){
         // 遍历从base到nextseqnum-1的所有报文,进行重传
         Packet * packet = packges.at(i);
-        pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", *packet);
+        if (!TESTING) {
+            pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", *packet);
+        }
         pns->sendToNetworkLayer(RECEIVER, *packet);
+    }
+}
+
+void GBNRdtSender::printWindow() {
+    if (TESTING) {
+        if (base < nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < nextseqnum;i++) {
+                cout << i << ", ";
+            }
+            cout << "]" << endl;
+        } else if (base > nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < MAX_SEQ; i++) {
+                cout << i << ", ";
+            }
+            for (int i = 0; i < nextseqnum; i++) {
+                cout << i << ", ";
+            }
+            cout << "]" << endl;
+        } else {
+            cout << "[ ]" << endl;
+        }
     }
 }

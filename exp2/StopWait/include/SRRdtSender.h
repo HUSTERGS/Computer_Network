@@ -14,6 +14,8 @@ private:
     int nextseqnum;
     std::vector<Packet *> packges;
     std::vector<int> packetState;
+
+    void printWindow();
 public:
     SRRdtSender();
     ~SRRdtSender();

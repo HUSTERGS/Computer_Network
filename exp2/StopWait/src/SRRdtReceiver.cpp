@@ -31,7 +31,7 @@ void SRRdtReceiver::receive(const Packet &packet) {
         int index = 0;
         if (rcv_base + GBN_WINDOW_SIZE <= MAX_SEQ) {
             //此时没有跨越边界
-            cout << "没有跨越边界" << endl;
+//            cout << "没有跨越边界" << endl;
             if (packet.seqnum >= rcv_base && packet.seqnum <= rcv_base + GBN_WINDOW_SIZE - 1) {
                 in_case1 = true;
                 index = packet.seqnum - rcv_base;
@@ -64,24 +64,29 @@ void SRRdtReceiver::receive(const Packet &packet) {
         if (in_case1) {
             // 如果是在第一个窗口的话
 //            assert(buffers.at(index)->seqnum == index);
+            if (packet.seqnum == rcv_base) {
+                cout << "SR 接收方收到数据包 seq = " << packet.seqnum << "窗口发生变化: 由 " << endl;
+                printWindow();
+                cout << "变为: " << endl;
+            }
             lastAckPkt.acknum = packet.seqnum;
             lastAckPkt.checksum = 0;
             lastAckPkt.checksum = pUtils->calculateCheckSum(lastAckPkt);
-            pUtils->printPacket("接收方发送确认报文", lastAckPkt);
+            if(!TESTING){pUtils->printPacket("接收方发送确认报文", lastAckPkt);}
             pns->sendToNetworkLayer(SENDER, lastAckPkt);    //调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
             if (packetState.at(index) == UNKNOW) {
                 // 如果之前没有收到，更改状态并存储
 //                cout << "收到paket的时候first packetState.size = " << packetState.size() << endl;
                 packetState[index] = RECEIVED;
-                cout << "计算出来的index = " << index << "实际上的seq = " << packet.seqnum;
+//                cout << "计算出来的index = " << index << "实际上的seq = " << packet.seqnum;
                 Packet *temp = buffers.at(index);
                 // 复制到对应的位置
                 copy_packet(&packet, temp);
-                cout << "之前没有收到" << endl;
+//                cout << "之前没有收到" << endl;
 //                cout << "收到paket的时候 packetState.size = " << packetState.size() << endl;
                 temp = nullptr;
             } else {
-                cout << "之前收到过" << endl;
+//                cout << "之前收到过" << endl;
             }
         }
         if (in_case2) {
@@ -89,9 +94,9 @@ void SRRdtReceiver::receive(const Packet &packet) {
             lastAckPkt.acknum = packet.seqnum;
             lastAckPkt.checksum = 0;
             lastAckPkt.checksum = pUtils->calculateCheckSum(lastAckPkt);
-            pUtils->printPacket("接收方发送确认报文", lastAckPkt);
+            if(!TESTING){pUtils->printPacket("接收方发送确认报文", lastAckPkt);}
             pns->sendToNetworkLayer(SENDER, lastAckPkt);    //调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
-            cout << "根据规则发送的ack" << endl;
+//            cout << "根据规则发送的ack" << endl;
         }
 //        cout << "此时收到的packet.seq = " << packet.seqnum << " rcv_base = " << rcv_base << endl;
 
@@ -99,9 +104,11 @@ void SRRdtReceiver::receive(const Packet &packet) {
             // 如果等于基序号
             assert(in_case1);
 //            cout << "等于rcv_base = " << rcv_base << " 此时packetState.size = " << packetState.size() << endl;
+
+
             while (packetState.at(0) == RECEIVED) {
                 // 上交报文，并填充新的空数据
-                cout << "上交了一个数据" << endl;
+//                cout << "上交了一个数据" << endl;
                 Message msg;
                 memcpy(msg.data, buffers.at(0)->payload, sizeof(buffers.at(0)->payload));
                 pns->delivertoAppLayer(RECEIVER, msg);
@@ -110,8 +117,9 @@ void SRRdtReceiver::receive(const Packet &packet) {
                 push_empty_packet();
                 rcv_base++;
                 rcv_base %= MAX_SEQ;
-                cout << "rcv_base改变为" << rcv_base << endl;
+//                cout << "rcv_base改变为" << rcv_base << endl;
             }
+            printWindow();
         }
     }
 }
@@ -132,4 +140,23 @@ void SRRdtReceiver::copy_packet(const Packet *source, Packet *dest) {
         dest->payload[i] = source->payload[i];
     }
     assert(pUtils->calculateCheckSum(*source) == source->checksum);
+}
+
+void SRRdtReceiver::printWindow() {
+    if(TESTING) {
+        cout << "> '-' 表示该包已经被缓存 <" << endl;
+        if (packetState.size() == 0) {
+            cout << "[ ]" << endl;
+            return;
+        }
+        cout << "[ ";
+        for (int i = 0; i < packetState.size(); i++) {
+            if (packetState.at(i) == RECEIVED) {
+                cout << "-" << (i + rcv_base) % MAX_SEQ << "-, ";
+            } else {
+                cout << (i + rcv_base) % MAX_SEQ << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
 }

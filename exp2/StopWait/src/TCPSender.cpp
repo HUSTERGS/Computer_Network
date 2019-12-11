@@ -23,7 +23,7 @@ bool TCPSender::send(const Message &message) {
     memcpy(packet->payload, message.data, sizeof(message.data));
     packet->checksum = pUtils->calculateCheckSum(*packet);
     packges.push_back(packet);
-    pUtils->printPacket("发送方发送报文", *packet);
+    if(!TESTING) {pUtils->printPacket("发送方发送报文", *packet);}
     if (base == nextseqnum) {
         // 直接将序号设置为0
         pns->startTimer(SENDER, Configuration::TIME_OUT,0);			//启动发送方定时器
@@ -49,6 +49,11 @@ void TCPSender::receive(const struct Packet & ackPkt) {
             // 先暂存base的值,用于停止计时器
             int temp = base;
             // 更新base的值
+
+            cout << "TCP 发送方收到ack = " << ackPkt.acknum << "窗口发生变化: 由 " << endl;
+            printWindow();
+            cout << "变为: " << endl;
+
             base = ackPkt.acknum + 1;
             base %= MAX_SEQ;
             int index = 0;
@@ -57,7 +62,7 @@ void TCPSender::receive(const struct Packet & ackPkt) {
             } else {
                 index = MAX_SEQ - temp + ackPkt.acknum;
             }
-            cout << "收到ack, 此时ack = " << ackPkt.acknum << " base = " << base << " temp = " << temp << " next = " << nextseqnum << endl;
+//            cout << "收到ack, 此时ack = " << ackPkt.acknum << " base = " << base << " temp = " << temp << " next = " << nextseqnum << endl;
 
             // 假设此时是base = 2 ^ k - 1，然后收到的ack = 0, 那么, 结果应该要删除2个
             for (int i = 0; i <= index; i++) {
@@ -80,20 +85,25 @@ void TCPSender::receive(const struct Packet & ackPkt) {
                 // 如果没有的话置为1
                 ackCount.insert({ackPkt.acknum, 1});
             }
+            printWindow();
         }
         else {
             // 如果不在当前的窗口当中
-            cout << "收到的ack = " << ackPkt.acknum << endl;
+//            cout << "收到的ack = " << ackPkt.acknum << endl;
 //            assert(ackCount.find(ackPkt.acknum) != ackCount.end());
             ackCount[ackPkt.acknum]++;
             if (ackCount[ackPkt.acknum] == 4 || ackPkt.acknum == -1) {
                 // 如果达到了4个重复的ack，执行快速重传，或者是第一个数据包出错所发送的ack = -1
                 assert(packges.size() > 0);
                 Packet * packet = packges.at(0);
-                pUtils->printPacket("收到3个重复ack，执行快速重传", *packet);
+                if(!TESTING) {pUtils->printPacket("收到3个重复ack，执行快速重传", *packet);}
+                if (TESTQR) {
+                    cout << "收到重复ack = " << ackPkt.acknum << "执行快速重传" << endl;
+                }
                 pns->sendToNetworkLayer(RECEIVER, *packet);
                 ackCount[ackPkt.acknum] = 0;
             }
+
         }
     }
 }
@@ -106,6 +116,33 @@ void TCPSender::timeoutHandler(int seqNum) {
     pns->startTimer(SENDER, Configuration::TIME_OUT, 0);
     // 只对最开始的一个包进行重传
     Packet * packet = packges.at(0);
-    pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", *packet);
+    if(!TESTING) {pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", *packet);}
     pns->sendToNetworkLayer(RECEIVER, *packet);
+    if (ackCount.find(seqNum) != ackCount.end()) {
+        ackCount[seqNum] = 0;
+    }
+}
+
+void TCPSender::printWindow() {
+    cout << "> '-' 表示该包已被确认<" << endl;
+    if (TESTING) {
+        if (base < nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < nextseqnum;i++) {
+                cout << i << ", ";
+            }
+            cout << "]" << endl;
+        } else if (base > nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < MAX_SEQ; i++) {
+                cout << i << ", ";
+            }
+            for (int i = 0; i < nextseqnum; i++) {
+                cout << i << ", ";
+            }
+            cout << "]" << endl;
+        } else {
+            cout << "[ ]" << endl;
+        }
+    }
 }

@@ -24,7 +24,9 @@ int main(int argc, char* argv[])
     RdtReceiver * pr = new TCPReceiver();
     RdtSender * ps = new TCPSender();
 	pns->setRunMode(0);  //VERBOS模式
-//	pns->setRunMode(1);  //安静模式
+	if (TESTING || TESTQR) {
+        pns->setRunMode(1);  //安静模式
+	}
 	pns->init();
 	pns->setRtdSender(ps);
 	pns->setRtdReceiver(pr);

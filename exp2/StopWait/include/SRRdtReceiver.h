@@ -17,6 +17,7 @@ private:
     // 填充空的packet
     void push_empty_packet();
     void copy_packet(const Packet * source, Packet * dest);
+    void printWindow();
 public:
     SRRdtReceiver();
     virtual ~SRRdtReceiver();

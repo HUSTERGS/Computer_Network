@@ -43,7 +43,7 @@ void SRRdtSender::receive(const struct Packet & ackPkt) {
         if (((nextseqnum > base) && (ackPkt.acknum >= base) && (ackPkt.acknum < nextseqnum)) || ((nextseqnum < base) && ((ackPkt.acknum < nextseqnum) || (ackPkt.acknum >= base)))) {
             // 落在当前窗口
             // 停止计时
-            cout << "落在当前窗口之内" << endl;
+//            cout << "落在当前窗口之内" << endl;
             pns->stopTimer(SENDER, ackPkt.acknum);
             int index = 0;
             if (ackPkt.acknum >= base) {
@@ -55,26 +55,33 @@ void SRRdtSender::receive(const struct Packet & ackPkt) {
                 // 假设 base = 2 ^ k -1，并且收到ack = 1，那么应该是第3个包, 即2 ^ k -1, 0, 1
             }
             // 更改对应的包的状态
+            if (ackPkt.acknum == base) {
+                cout << "SR 发送方收到ack = " << ackPkt.acknum << "窗口发生变化: 由 " << endl;
+                printWindow();
+                cout << "变为: " << endl;
+            }
             packetState[index] = RECEIVED;
 //            cout << "收到第" << index << "个ack" << endl;
             if (ackPkt.acknum == base) {
                 // 如果等于base的话
-                cout << "等于base" << endl;
+//                cout << "等于base" << endl;
+
                 while(packetState.size() > 0 && packetState.at(0) == RECEIVER) {
                     // 不断去除已经标记为收到的包
                     packetState.erase(packetState.begin());
                     packges.erase(packges.begin());
-                    cout << "清除一个标记为收到的包" << endl;
+//                    cout << "清除一个标记为收到的包" << endl;
                     base++;
                 }
                 // 移动窗口开始位置
                 base %= MAX_SEQ;
-                cout << "此时base更新为 " << base << endl;
+                printWindow();
+//                cout << "此时base更新为 " << base << endl;
                 // 理论上base 应该始终小于等于nextseqnum
 //                assert(base <= nextseqnum);
             }
         } else {
-            cout << "没有落在当前窗口 ack = " << ackPkt.acknum << " base = " << base << " nextseqnum = " << nextseqnum << endl;
+//            cout << "没有落在当前窗口 ack = " << ackPkt.acknum << " base = " << base << " nextseqnum = " << nextseqnum << endl;
         }
     }
     waitingState = packges.size() >= GBN_WINDOW_SIZE;
@@ -98,4 +105,40 @@ void SRRdtSender::timeoutHandler(int seqNum) {
     assert(packges.at(index)->seqnum == seqNum);
     pns->sendToNetworkLayer(RECEIVER, *packges.at(index));
     pns->startTimer(SENDER, Configuration::TIME_OUT,seqNum);
+}
+
+void SRRdtSender::printWindow() {
+    if (TESTING) {
+        cout << "> '-' 表示该包已经收到 < " << endl;
+        if (base < nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < nextseqnum;i++) {
+                if (packetState.at(i - base) == RECEIVED) {
+                    cout << "-" << i << "-, ";
+                } else {
+                    cout << i << ", ";
+                }
+            }
+            cout << "]" << endl;
+        } else if (base > nextseqnum) {
+            cout << "[ ";
+            for (int i = base; i < MAX_SEQ; i++) {
+                if (packetState.at(i - base) == RECEIVED) {
+                    cout << "-" << i << "-, ";
+                } else {
+                    cout << i << ", ";
+                }
+            }
+            for (int i = 0; i < nextseqnum; i++) {
+                if (packetState.at(i + MAX_SEQ - base) == RECEIVED) {
+                    cout << "-" << i << "-, ";
+                } else {
+                    cout << i << ", ";
+                }
+            }
+            cout << "]" << endl;
+        } else {
+            cout << "[ ]" << endl;
+        }
+    }
 }
