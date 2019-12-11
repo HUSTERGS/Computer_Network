@@ -29,7 +29,7 @@ void GBNRdtReceiver::receive(const Packet &packet) {
         pns->sendToNetworkLayer(SENDER, lastAckPkt);	//调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
 
         this->expectSequenceNumberRcvd += 1; //接收序号在0-1之间切换
-        this->expectSequenceNumberRcvd %= (1 << SEQ_BIT);
+        this->expectSequenceNumberRcvd %= MAX_SEQ;
     } else {
         if (checkSum != packet.checksum) {
             pUtils->printPacket("接收方没有正确收到发送方的报文,数据校验错误", packet);

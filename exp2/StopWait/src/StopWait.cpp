@@ -9,13 +9,16 @@
 #include "StopWaitRdtReceiver.h"
 #include "GBNRdtReceiver.h"
 #include "GBNRdtSender.h"
-
+#include "SRRdtReceiver.h"
+#include "SRRdtSender.h"
 int main(int argc, char* argv[])
 {
 //	RdtSender *ps = new StopWaitRdtSender();
 //	RdtReceiver * pr = new StopWaitRdtReceiver();
-    RdtSender *ps = new GBNRdtSender();
-    RdtReceiver * pr = new GBNRdtReceiver();
+//    RdtSender *ps = new GBNRdtSender();
+//    RdtReceiver * pr = new GBNRdtReceiver();
+    RdtReceiver * pr = new SRRdtReceiver();
+    RdtSender * ps = new SRRdtSender();
 	pns->setRunMode(0);  //VERBOS模式
 //	pns->setRunMode(1);  //安静模式
 	pns->init();
@@ -30,7 +33,7 @@ int main(int argc, char* argv[])
 	delete pr;
 	delete pUtils;									//指向唯一的工具类实例，只在main函数结束前delete
 	delete pns;										//指向唯一的模拟网络环境类实例，只在main函数结束前delete
-	
+
 	return 0;
 }
 
